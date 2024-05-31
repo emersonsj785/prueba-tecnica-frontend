@@ -1,0 +1,15 @@
+<div class="header text-center">
+    <h1 class="inicio-sesion">Welcome!</h1>
+  </div>
+  
+  <div class="login-container">
+    <form [formGroup]="form">
+      <div class="form-group">
+        <input type="text" id="username" name="username"  class="form-control" placeholder="username" required formControlName="username">
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" name="password" class="form-control" placeholder="password" required formControlName="contrasenia">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="login()">Ingresar</button>
+    </form>
+  </div>

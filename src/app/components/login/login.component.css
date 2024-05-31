@@ -1,0 +1,38 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: orange;
+  }
+  
+  .header {
+    margin-bottom: 20px; /* Ajusta el margen inferior según sea necesario */
+  }
+  
+  .inicio-sesion {
+    font-family: 'Gill Sans';
+    color: aliceblue;
+  }
+  
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.5); /* Establece el fondo transparente */
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid #ffa500; /* Establece el borde naranja luminoso */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-container form {
+    margin: 0; /* Elimina el margen del formulario */
+  }
+  
+  .login-container .form-group {
+    margin-bottom: 15px; /* Ajusta el margen inferior de los elementos del formulario según sea necesario */
+  }
+  
+  .login-container label {
+    font-weight: bold; /* Hace que las etiquetas del formulario sean más visibles */
+  }
+  

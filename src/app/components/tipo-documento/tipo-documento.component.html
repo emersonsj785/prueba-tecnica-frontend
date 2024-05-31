@@ -1,0 +1,138 @@
+<div class="card bg-light mb-3">
+    <div class="card-header">{{descDocumento}}</div>
+    <div class="card-body">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID Tipo Documento</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let doc of documentos">
+                    <td>{{doc.id}}</td>
+                    <td>{{doc.codigo}}</td>
+                    <td>{{doc.nombre}}</td>
+                    <td>{{doc.descripcion}}</td>
+                    <td>{{doc.estado === 1 ? 'Activo' : 'Inactivo'}}</td>
+                    <td>
+                        <!-- Botón para Editar -->
+                        <button class="btn btn-primary" (click)="editarDocumento(doc)">Editar</button>
+                    </td>
+                    <td>
+                        <!-- Botón para eliminar -->
+                        <button class="btn btn-danger" (click)="mostrarConfirmacionEliminar(doc.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Diálogo de confirmación de eliminación -->
+<div id="confirmDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmación</h5>
+                <button type="button" class="close" onclick="document.getElementById('confirmDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar este tipo de documento?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSi" class="btn btn-danger">Sí</button>
+                <button id="btnNo" class="btn btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario para agregar un nuevo tipo de documento -->
+<div id="addDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Tipo de Documento</h5>
+                <button type="button" class="close" onclick="document.getElementById('addDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="agregarDocumento()">
+                    <div class="form-group">
+                        <label for="codigo">Código</label>
+                        <input type="text" id="codigo" class="form-control" placeholder="Código" formControlName="codigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" id="descripcion" class="form-control" placeholder="Descripción" formControlName="descripcion">
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('addDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario para editar un tipo de documento -->
+<div id="editDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Tipo de Documento</h5>
+                <button type="button" class="close" onclick="document.getElementById('editDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editForm" (ngSubmit)="actualizarDocumento()">
+                    <div class="form-group">
+                        <label for="editCodigo">Código</label>
+                        <input type="text" id="editCodigo" class="form-control" placeholder="Código" formControlName="codigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editNombre">Nombre</label>
+                        <input type="text" id="editNombre" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescripcion">Descripción</label>
+                        <input type="text" id="editDescripcion" class="form-control" placeholder="Descripción" formControlName="descripcion">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEstado">Estado</label>
+                        <select id="editEstado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('editDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-footer">
+    <button class="btn btn-success" (click)="mostrarAgregarDocumento()">Agregar Tipo documento</button><br>
+</div>

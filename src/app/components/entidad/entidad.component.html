@@ -1,0 +1,187 @@
+<div class="card bg-light mb-3">
+    <div class="card-header">{{descEntidad}}</div>
+    <div class="card-body">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID Entidad</th>
+                    <th>Tipo Documento</th>
+                    <th># Documento</th>
+                    <th>Razón Social</th>
+                    <th>Nombre Comercial</th>
+                    <th>Tipo Contribuyente</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let enti of entidades">
+                    <td>{{enti.id}}</td>
+                    <td>{{enti.enTipoDocumento?.codigo + " - " + enti.enTipoDocumento?.nombre}}</td>
+                    <td>{{enti.nroDocumento}}</td>
+                    <td>{{enti.razonSocial}}</td>
+                    <td>{{enti.nombreComercial}}</td>
+                    <td>{{enti.enTipoContribuyente?.id + " - " + enti.enTipoContribuyente?.nombre}}</td>
+                    <td>{{enti.direccion}}</td>
+                    <td>{{enti.telefono}}</td>
+                    <td>{{enti.estado === 1 ? 'Activo' : 'Inactivo'}}</td>
+                    <td>
+                        <!-- Botón para Editar -->
+                        <button class="btn btn-primary" (click)="editarEntidad(enti)">Editar</button>
+                    </td>
+                    <td>
+                        <!-- Botón para eliminar -->
+                        <button class="btn btn-danger" (click)="mostrarConfirmacionEliminar(enti.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="confirmDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmación</h5>
+                <button type="button" class="close" onclick="document.getElementById('confirmDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar esta Entidad?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSi" class="btn btn-danger">Sí</button>
+                <button id="btnNo" class="btn btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Entidad</h5>
+                <button type="button" class="close" onclick="document.getElementById('addDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="agregarEntidad()">
+                    <div class="form-group">
+                        <label for="idTipoDocumento">Tipo Documento</label>
+                        <select formControlName="idTipoDocumento" class="form-select">
+                            <Option *ngFor="let docus of tiposDocumentos" [value]="docus.id" [label]="docus.nombre">
+                            </Option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nroDocumento">Número Documento</label>
+                        <input type="text" id="nroDocumento" class="form-control" placeholder="Número Documento" formControlName="nroDocumento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="razonSocial">Razón Social</label>
+                        <input type="text" id="razonSocial" class="form-control" placeholder="Razón Social" formControlName="razonSocial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreComercial">Nombre Comercial</label>
+                        <input type="text" id="nombreComercial" class="form-control" placeholder="Nombre Comercial" formControlName="nombreComercial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idTipoContribuyente">Tipo Contribuyente</label>
+                        <select formControlName="idTipoContribuyente" class="form-select">
+                            <Option *ngFor="let contr of tiposContribuyentes" [value]="contr.id" [label]="contr.nombre">
+                            </Option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" id="direccion" class="form-control" placeholder="Dirección" formControlName="direccion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" class="form-control" placeholder="Dirección" formControlName="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('addDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Entidad</h5>
+                <button type="button" class="close" onclick="document.getElementById('editDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editForm" (ngSubmit)="actualizarEntidad()">
+                    <div class="form-group">
+                        <label for="idTipoDocumento">Tipo Documento</label>
+                        <select formControlName="idTipoDocumento" class="form-select">
+                            <Option *ngFor="let docus of tiposDocumentos" [value]="docus.id" [label]="docus.nombre">
+                            </Option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nroDocumento">Número Documento</label>
+                        <input type="text" id="nroDocumento" class="form-control" placeholder="Número Documento" formControlName="nroDocumento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="razonSocial">Razón Social</label>
+                        <input type="text" id="razonSocial" class="form-control" placeholder="Razón Social" formControlName="razonSocial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreComercial">Nombre Comercial</label>
+                        <input type="text" id="nombreComercial" class="form-control" placeholder="Nombre Comercial" formControlName="nombreComercial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idTipoContribuyente">Tipo Contribuyente</label>
+                        <select formControlName="idTipoContribuyente" class="form-select">
+                            <Option *ngFor="let contr of tiposContribuyentes" [value]="contr.id" [label]="contr.nombre">
+                            </Option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" id="direccion" class="form-control" placeholder="Dirección" formControlName="direccion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" class="form-control" placeholder="Dirección" formControlName="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEstado">Estado</label>
+                        <select id="editEstado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('editDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-footer">
+    <button class="btn btn-success" (click)="mostrarAgregarEntidad()">Agregar Entidad</button><br>
+</div>

@@ -1,0 +1,116 @@
+<div class="card bg-light mb-3">
+    <div class="card-header">{{descContribuyente}}</div>
+    <div class="card-body">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID Tipo Contribuyente</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tcont of contribuyentes">
+                    <td>{{tcont.id}}</td>
+                    <td>{{tcont.nombre}}</td>
+                    <td>{{tcont.estado === 1 ? 'Activo' : 'Inactivo'}}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="editarContribuyente(tcont)">Editar</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="mostrarConfirmacionEliminar(tcont.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Diálogo de confirmación de eliminación -->
+<div id="confirmDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmación</h5>
+                <button type="button" class="close" onclick="document.getElementById('confirmDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar este tipo de contribuyente?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSi" class="btn btn-danger">Sí</button>
+                <button id="btnNo" class="btn btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario para agregar un nuevo tipo de contribuyente -->
+<div id="addDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Tipo de Contribuyente</h5>
+                <button type="button" class="close" onclick="document.getElementById('addDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="agregarContribuyente()">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('addDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario para editar un tipo de documento -->
+<div id="editDialog" style="display: none;">
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Tipo de Contribuyente</h5>
+                <button type="button" class="close" onclick="document.getElementById('editDialog').style.display='none';">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editForm" (ngSubmit)="actualizarContribuyente()">
+                    <div class="form-group">
+                        <label for="editNombre">Nombre</label>
+                        <input type="text" id="editNombre" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEstado">Estado</label>
+                        <select id="editEstado" class="form-control" formControlName="estado" required>
+                            <option [value]="1">Activo</option>
+                            <option [value]="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('editDialog').style.display='none';">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-footer">
+    <button class="btn btn-success" (click)="mostrarAgregarContribuyente()">Agregar Tipo Contribuyente</button><br>
+</div>
